@@ -1,8 +1,10 @@
 var crypto = require('crypto');
 var http = require('http');
 var path = require('path');
+var util = require('util');
 var express = require('express');
 var session = require('express-session');
+var expressValidator = require('express-validator');
 var app = express();
 var bodyParser = require('body-parser');
 var NedbStore = require('nedb-session-store')(session);
@@ -17,6 +19,7 @@ app.use(session({
 }));
 
 app.use(bodyParser.json());
+app.use(expressValidator());
 
 var Datastore = require('nedb');
 var users = new Datastore({ filename: path.join(__dirname,'db', 'users.db'), autoload: true, timestampData : true});
@@ -42,6 +45,50 @@ var Favorite = function(data) {
   this.username = data.username;
   this.drink = data.drink;
 };
+
+
+// Security
+
+app.use(function(req, res, next) {
+  Object.keys(req.body).forEach(function(arg) {
+    switch(arg){
+      case 'username':
+        req.sanitizeBody(arg).escape();
+        req.sanitizeBody(arg).trim();
+        req.checkBody(arg, 'Username cannot be empty').notEmpty();
+        break;
+      case 'password':
+        req.sanitizeBody(arg).escape();
+        req.sanitizeBody(arg).trim();
+        req.checkBody(arg, 'Password cannot be empty').notEmpty();
+        break;
+      case 'drink':
+        req.sanitizeBody(arg).escape();
+        req.sanitizeBody(arg).trim();
+        req.checkBody(arg, 'Invalid drink id').notEmpty().isInt();
+        break;
+    }
+  });
+
+  Object.keys(req.params).forEach(function(arg) {
+    switch(arg){
+      case 'drink':
+        req.sanitizeParam(arg).escape();
+        req.sanitizeParam(arg).trim();
+        req.checkParam(arg, 'Invalid drink id').notEmpty().isInt();
+        break;
+    }
+  });
+
+  req.getValidationResult().then(function(result) {
+    if (!result.isEmpty()) {
+      return res
+        .status(400)
+        .send('Validation errors: ' + util.inspect(result.array().map(function(r) { return r.msg })));
+    }
+    else next();
+  });
+});
 
 
 // Authenticate
