@@ -50,6 +50,9 @@ Here is how you can use the app:
 [React](https://facebook.github.io/react/) - For real-time updates to the UI elements with high performance.  
 [Bootstrap 4](http://getbootstrap.com/) - For responsive pages that will look great on any device.  
 [throttle-debounce](https://www.npmjs.com/package/throttle-debounce) - To debounce search query in __Browse__ section.  
+[Jest](https://facebook.github.io/jest/) - JavaScript Testing utility for React.  
+[Chai](http://chaijs.com/) - Assertion library for Node testing.  
+[Sinon](http://sinonjs.org/) - Standalone test spies, stubs and mocks for JavaScript.  
   
 ---
 ## Installation
@@ -68,6 +71,12 @@ Pre-requisites - Latest version of __node__ and __npm__.
 8. Run `npm install` to install all the packages necessary for the client.
 9. Run `npm start`
 10. This should automatically open up browser and run the app on `http://localhost:3000/`
+  
+#### Test
+
+1. Open a new Terminal window.
+2. Run `cd Drinkterest/client`
+3. Run `npm run test`
   
 ---
 
