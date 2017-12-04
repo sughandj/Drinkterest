@@ -1,0 +1,51 @@
+body {
+  padding-top: 5rem;
+}
+
+#app {
+  padding: 3rem 1.5rem;
+}
+
+#navbar {
+  cursor: default;
+}
+
+#dropdown-item:hover {
+  color: white;
+}
+
+#loading {
+  text-align: center;
+}
+
+#progress {
+  width: 100%;
+}
+
+#signin {
+  width: 70%;
+  margin: auto;
+}
+
+#signup {
+  width: 70%;
+  margin: auto;
+}
+
+.card-image {
+  width: fit-content;
+  margin: auto;
+}
+
+.card {
+  margin-bottom: 3rem;
+}
+
+.pagination {
+  cursor: default;
+  justify-content: center;
+}
+
+.page-item.active>a:hover {
+  color: white;
+}
