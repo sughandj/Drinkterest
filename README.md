@@ -19,6 +19,9 @@
 ## Description
   
 `Drinkterest` is an app to browse drinks carried by LCBO and favorite them.  
+  
+![screenshot](https://github.com/sughandj/Drinkterest/blob/master/screenshot.png)
+  
 Here is how you can use the app:
 
 1. When you start the app for the first time, you will see __Sign In__ page.
