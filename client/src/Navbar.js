@@ -1,6 +1,9 @@
 import React from 'react';
 
 const Navbar = ({ authorized, navigate, onBrowseClick, onFavoritesClick, onSignoutClick }) => {
+  // eslint-disable-next-line
+  let dropdown = (<a className="nav-link dropdown-toggle" href="#"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{authorized}</a>);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
       <a className="navbar-brand" href="/">Drinkterest</a>
@@ -20,7 +23,7 @@ const Navbar = ({ authorized, navigate, onBrowseClick, onFavoritesClick, onSigno
           </ul>
           <ul className="navbar-nav ml-auto">
             <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{authorized}</a>
+              {dropdown}
               <div className="dropdown-menu dropdown-menu-right">
                 <a id="dropdown-item" onClick={onSignoutClick} className="dropdown-item">Sign Out</a>
               </div>
