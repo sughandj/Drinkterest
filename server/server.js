@@ -9,7 +9,11 @@ var app = express();
 var bodyParser = require('body-parser');
 var NedbStore = require('nedb-session-store')(session);
 
-app.use(express.static(path.resolve(__dirname,'../client/build')));
+app.use(express.static(path.join(__dirname,'../client/build')));
+
+app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
 
 app.use(session({
   secret: 'topsecret',
