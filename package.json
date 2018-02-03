@@ -1,0 +1,16 @@
+{
+  "name": "drinkterest",
+  "version": "1.0.0",
+  "description": "An app to make a list of all your favorite drinks",
+  "main": "index.js",
+  "scripts": {
+    "install": "(cd client && npm install) && (cd server && npm install)",
+    "start": "(cd client && npm build) && (cd server && node server.js)",
+  },
+  "author": "Jai Sughand",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sughandj/Drinkterest.git"
+  },
+  "license": "ISC"
+}
