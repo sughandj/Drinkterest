@@ -4,7 +4,7 @@
   "description": "An app to make a list of all your favorite drinks",
   "main": "index.js",
   "scripts": {
-    "install": "(cd client && npm install && npm build) && (cd server && npm install)",
+    "install": "(cd client && npm install && npm run build) && (cd server && npm install)",
     "start": "cd server && node server.js"
   },
   "author": "Jai Sughand",
