@@ -9,6 +9,8 @@ var app = express();
 var bodyParser = require('body-parser');
 var NedbStore = require('nedb-session-store')(session);
 
+app.use(express.static(path.resolve(__dirname,'../client/build')));
+
 app.use(session({
   secret: 'topsecret',
   resave: true,
