@@ -115,6 +115,7 @@ app.post('/api/signin/', function (req, res, next) {
     req.session.save();
     delete user.salt;
     delete user.saltedHash;
+    console.log(req.body.username);
     return res.json(user);
   });
 });
