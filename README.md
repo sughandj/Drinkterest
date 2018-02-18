@@ -1,4 +1,4 @@
-# PaytmLabs/SoftwareChallenge 
+# SoftwareChallenge 
 ---
   
 # __`Drinkterest`__
