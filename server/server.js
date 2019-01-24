@@ -1,5 +1,5 @@
 var crypto = require('crypto');
-var http = require('http');
+var https = require('https');
 var path = require('path');
 var util = require('util');
 var express = require('express');
@@ -65,7 +65,7 @@ app.use(function(req, res, next) {
       case 'drink':
         req.sanitizeBody(arg).escape();
         req.sanitizeBody(arg).trim();
-        req.checkBody(arg, 'Invalid drink id').notEmpty().isInt();
+        req.checkBody(arg, 'Invalid drink id').notEmpty();
         break;
     }
   });
@@ -75,7 +75,7 @@ app.use(function(req, res, next) {
       case 'drink':
         req.sanitizeParam(arg).escape();
         req.sanitizeParam(arg).trim();
-        req.checkParam(arg, 'Invalid drink id').notEmpty().isInt();
+        req.checkParam(arg, 'Invalid drink id').notEmpty();
         break;
     }
   });
@@ -175,35 +175,34 @@ app.delete('/api/favorite/:id/', checkUserAuth, function (req, res, next) {
 });
 
 
-// LCBO API
+// BreweryDB API
 
-app.get('/lcboapi/products*', function (req, res, next) {
+app.get('/brewerydb*', function (req, res, next) {
   var options = {
-    hostname: 'lcboapi.com',
-    path: req._parsedOriginalUrl.pathname.replace("/lcboapi", "") + req._parsedOriginalUrl.search,
+    hostname: 'sandbox-api.brewerydb.com',
+    path: '/v2' + req._parsedOriginalUrl.pathname.replace("/brewerydb", "") + req._parsedOriginalUrl.search + '&key=5f28fa198304703b391de24a721adf2e',
     method: 'GET',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Token MDpiYWYyMDE3Ni1kN2M0LTExZTctOGZkNi0zN2FjYjI5ZDM3MmM6MGtVd2tKTXVmdjlOYzlPS2hBNUtkaDcwb3NZcmoxbTROOFB5'
+      'Content-Type': 'application/json'
     }
   };
 
-  var lcboreq = http.request(options, function (lcbores) {
+  var brewerydbreq = https.request(options, function (brewerydbres) {
     var body = '';
-    lcbores.setEncoding('utf8');
-    lcbores.on('data', function (chunk) {
+    brewerydbres.setEncoding('utf8');
+    brewerydbres.on('data', function (chunk) {
       body += chunk;
     });
-    lcbores.on('end', () => {
+    brewerydbres.on('end', () => {
       return res.json(JSON.parse(body));
     });
   });
 
-  lcboreq.on('error', function (err) {
+  brewerydbreq.on('error', function (err) {
     return res.status(500).end(err);
   });
 
-  lcboreq.end();
+  brewerydbreq.end();
 });
 
 

@@ -7,7 +7,7 @@ class Browse extends Component {
     super(props);
 
     this.state = {
-      per_page: 9,
+      per_page: 50,
       per_row: 3,
       page: 1,
       query: "",
@@ -29,7 +29,8 @@ class Browse extends Component {
     const name = target.name;
 
     this.setState({
-      [name]: value
+      [name]: value,
+      page: 1
     }, () => this.getResults());
   }
 
@@ -54,6 +55,8 @@ class Browse extends Component {
   }
 
   getResults() {
+    let endpoint = this.state.query ? 'search' : 'beers';
+
     fetch('/api/favorites', {
         method: "get",
         headers: {
@@ -67,7 +70,7 @@ class Browse extends Component {
         .then(res => res.json())
         .then(favoritesList => {
           let favorites = new Set(favoritesList);
-          fetch('/lcboapi/products?q=' + this.state.query + '&per_page=' + this.state.per_page + '&page=' + this.state.page)
+          fetch(`/brewerydb/${endpoint}?q=${this.state.query}&p=${this.state.page}`)
             .then(this.checkStatus)
             .then(res => res.json())
             .then(results => this.setState({ results, favorites }))
@@ -122,43 +125,40 @@ class Browse extends Component {
   }
 
   render () {
-    const pager = this.state.results.pager;
-    const results = this.state.results.result;
+    const results = this.state.results;
+    const data = this.state.results.data || [];
 
     let container = [];
     let grid = [];
     let key = 0;
 
-    if (results) {
+    if (Object.keys(results).length) {
       let rows = [];
       let cols = [];
 
-      for (let i = 0; i < results.length; i++) {
+      for (let i = 0; i < data.length; i++) {
         cols.push(
           <div key={key++} className="col">
             <div className="card">
-              <h4 className="card-header">{results[i].name}</h4>
+              <h4 className="card-header">{data[i].nameDisplay}</h4>
+              <div className="card-body"></div>
+              <img className="card-image" src={data[i].labels ? data[i].labels.medium : "https://imgplaceholder.com/256x256/ffffff/dddddd/ion-beer"} alt={data[i].nameDisplay}/>
               <div className="card-body">
-                <h5 className="card-title">{results[i].style}</h5>
-                <h6 className="card-subtitle text-muted">{results[i].origin}</h6>
-              </div>
-              <img className="card-image" src={results[i].image_thumb_url} alt={results[i].name}/>
-              <div className="card-body">
-                <p className="card-text">{results[i].package}</p>
+                <p className="card-text">{data[i].description}</p>
               </div>
               <div className="card-footer text-muted">
                 <button onClick={this.onToggleFavorite}
-                  id={results[i].id} ref={results[i].id}
+                  id={data[i].id} ref={data[i].id}
                   type="button"
-                  className={ this.state.favorites.has(results[i].id.toString()) ? "btn btn-danger" : "btn btn-secondary" }>
-                  { this.state.favorites.has(results[i].id.toString()) ? "Unfavorite" : "Favorite" }
+                  className={ this.state.favorites.has(data[i].id.toString()) ? "btn btn-danger" : "btn btn-secondary" }>
+                  { this.state.favorites.has(data[i].id.toString()) ? "Unfavorite" : "Favorite" }
                 </button>
               </div>
             </div>
           </div>
         );
 
-        if ((i + 1) % this.state.per_row === 0 || (i + 1) === results.length) {
+        if ((i + 1) % this.state.per_row === 0 || (i + 1) === data.length) {
           rows.push(
             <div key={key++} className="row">
               {cols}
@@ -175,7 +175,7 @@ class Browse extends Component {
       );
 
       let nextpages = [];
-      for (let i = this.state.page + 1; i <= Math.min(this.state.page + 4, pager.total_pages); i++) {
+      for (let i = this.state.page + 1; i <= Math.min(this.state.page + 4, results.numberOfPages); i++) {
         nextpages.push(
           <li key={key++} className="page-item">
             <a onClick={() => this.getPage(i)} className="page-link">{i}</a>
@@ -183,22 +183,24 @@ class Browse extends Component {
         );
       };
 
-      grid.push(
-        <div key={key++}>
-          <ul className="pagination">
-            <li className={ pager.is_first_page ? "page-item disabled" : "page-item" }>
-              <a onClick={() => this.getPage(this.state.page - 1)} className="page-link">&laquo;</a>
-            </li>
-            <li className="page-item active">
-              <a className="page-link">{this.state.page}</a>
-            </li>
-            {nextpages}
-            <li className={ pager.is_final_page ? "page-item disabled" : "page-item" }>
-              <a onClick={() => this.getPage(this.state.page + 1)} className="page-link">&raquo;</a>
-            </li>
-          </ul>
-        </div>
-      );
+      if (results.numberOfPages) {
+        grid.push(
+          <div key={key++}>
+            <ul className="pagination">
+              <li className={ results.currentPage === 1 ? "page-item disabled" : "page-item" }>
+                <a onClick={() => this.getPage(this.state.page - 1)} className="page-link">&laquo;</a>
+              </li>
+              <li className="page-item active">
+                <a className="page-link">{this.state.page}</a>
+              </li>
+              {nextpages}
+              <li className={ results.currentPage === results.numberOfPages ? "page-item disabled" : "page-item" }>
+                <a onClick={() => this.getPage(this.state.page + 1)} className="page-link">&raquo;</a>
+              </li>
+            </ul>
+          </div>
+        );
+      }
     }
     else {
       grid.push(<Loading key={key++}/>);
