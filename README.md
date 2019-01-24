@@ -2,7 +2,7 @@
 ---
   
 # __`Drinkterest`__
-## An app to make a list of all your favorite drinks
+## An app to make a list of all your favorite beers
   
 ### Demo URL - [http://drinkterest.jaisughand.com](http://drinkterest.jaisughand.com)
   
@@ -18,7 +18,7 @@
 ---
 ## Description
   
-`Drinkterest` is an app to browse drinks carried by LCBO and favorite them.  
+`Drinkterest` is an app to browse beers (compiled by BreweryDB) and favorite them.  
   
 ![screenshot](https://github.com/sughandj/Drinkterest/blob/master/screenshot.png)
   
@@ -28,9 +28,9 @@ Here is how you can use the app:
 2. Since you don't have an account, click on the __Sign Up__ button to create one.
 3. Enter the credentials and click on __Submit__.
 4. Now you can __Sign In__ with those credentials.
-5. After signing in, you will see the __Browse__ section. Here you can search and check out the drinks that are sold by LCBO.
-6. Click on the __Favorite__ button of one of the drinks you like!
-7. Now go to the __Favorites__ section (on the Navbar) to view the drinks you have favorited.
+5. After signing in, you will see the __Browse__ section. Here you can search and check out the beers that are compiled by BreweryDB.
+6. Click on the __Favorite__ button of one of the beers you like!
+7. Now go to the __Favorites__ section (on the Navbar) to view the beers you have favorited.
 8. Finally, you can __Sign Out__ of the app by clicking on your username dropdown (on the Navbar).
 9. When you log back in next time, your data is persisted.
   
