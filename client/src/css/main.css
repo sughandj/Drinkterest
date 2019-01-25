@@ -41,6 +41,7 @@ body {
   margin: auto;
   margin-bottom: 3rem;
   max-width: 400px;
+  min-width: 190px;
 }
 
 .pagination {
